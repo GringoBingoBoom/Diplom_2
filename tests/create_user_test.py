@@ -13,29 +13,21 @@ class TestUserCreation:
         'name'
     ]
 
-    @allure.title('setup')
-    def setup_method(self):
-        self.teardown_payload = None
-
     @allure.title('1.1. Создание пользователя: создать уникального пользователя')
-    def test_create_uniq_user_one_user_added(self, payload):
+    def test_create_uniq_user_one_user_added(self, payload, create_user):
         """
-        создаем одного нового пользователя и передаем payload в teardown_payload
+        создаем одного нового пользователя
         """
-        self.teardown_payload = payload
-        response = ApiRequest.post(urls.CREATE_USER, payload)
-        r = response.json()
+        r = create_user.json()
 
-        assert r['success'] and response.status_code == 200, \
-            f'пользователь не создан {r['success']=} и {response.status_code=}'
+        assert r['success'] and create_user.status_code == 200, \
+            f'пользователь не создан {r['success']=} и {create_user.status_code=}'
 
     @allure.title('1.2. Создание пользователя: создать пользователя, который уже зарегистрирован')
-    def test_create_user_already_exist(self, payload):
+    def test_create_user_already_exist(self, payload, create_user):
         """
-        создаем пользователя который уже существует и передаем payload в teardown_payload
+        создаем пользователя который уже существует
         """
-        self.teardown_payload = payload
-        ApiRequest.post(urls.CREATE_USER, payload)
         response = ApiRequest.post(urls.CREATE_USER, payload)  # повторное создание пользователя
         r = response.json()
 
@@ -55,17 +47,3 @@ class TestUserCreation:
         assert r['message'] == MessagesResponse.REQUIRED_FIELDS and response.status_code == 403, (
             f'пользователь не создан {r['message']=} и {response.status_code=}')
 
-    @allure.title('teardown')
-    def teardown_method(self, payload_login):
-        """
-        удаляем данные на основании payload. Через авторизацию получаем токен
-        """
-        if self.teardown_payload:
-            payload_login = CreatePayload.payload_for_login(self.teardown_payload)
-            response = ApiRequest.post(urls.AUTHORIZATION, payload_login)
-            if response.status_code == 200:  # если пользователь существует удаляем данные о нем
-                r = response.json()
-                payload_token = CreatePayload.payload_authorization(r['accessToken'])
-                response_del = ApiRequest.delete(urls.USER_INFO, payload_token)
-                print(response_del.json(), self.teardown_payload)
-                assert response_del.status_code == 202, f'Значение {response_del.status_code=} не равно 202'

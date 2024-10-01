@@ -11,7 +11,19 @@ def payload():
 
 @pytest.fixture(scope='function')
 def create_user(payload):
-    return ApiRequest.post(urls.CREATE_USER, payload)
+    user = ApiRequest.post(urls.CREATE_USER, payload)
+
+    yield user
+
+    # teardown
+    payload_login = CreatePayload.payload_for_login(payload)
+    response = ApiRequest.post(urls.AUTHORIZATION, payload_login)
+    if response.status_code == 200:  # если пользователь существует удаляем данные о нем
+        r = response.json()
+        payload_token = CreatePayload.payload_authorization(r['accessToken'])
+        response_del = ApiRequest.delete(urls.USER_INFO, payload_token)
+        print(response_del.json(), payload)
+        assert response_del.status_code == 202, f'Значение {response_del.status_code=} не равно 202'
 
 
 @pytest.fixture(scope='function')
