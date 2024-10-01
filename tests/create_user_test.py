@@ -39,7 +39,7 @@ class TestUserCreation:
         response = ApiRequest.post(urls.CREATE_USER, payload)  # повторное создание пользователя
         r = response.json()
 
-        assert r['message'] == MessagesResponse.already_exists and response.status_code == 403, (
+        assert r['message'] == MessagesResponse.ALREADY_EXISTS and response.status_code == 403, (
             f'пользователь не создан {r['message']=} и {response.status_code=}')
 
     @allure.title('1.3. Создание пользователя: создать пользователя и не заполнить одно из обязательных полей')
@@ -52,7 +52,7 @@ class TestUserCreation:
         response = ApiRequest.post(urls.CREATE_USER, payload)
         r = response.json()
 
-        assert r['message'] == MessagesResponse.required_fields and response.status_code == 403, (
+        assert r['message'] == MessagesResponse.REQUIRED_FIELDS and response.status_code == 403, (
             f'пользователь не создан {r['message']=} и {response.status_code=}')
 
     @allure.title('teardown')

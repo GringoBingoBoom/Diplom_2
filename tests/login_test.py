@@ -40,7 +40,7 @@ class TestLoginExist:
         payload_login[wrong_field] = payload_login[wrong_field] + "corrupt"
         response = ApiRequest.post(urls.AUTHORIZATION, payload_login)
         r = response.json()
-        assert r['message'] == MessagesResponse.incorrect_field and response.status_code == 401, (
+        assert r['message'] == MessagesResponse.INCORRECT_FIELD and response.status_code == 401, (
             f'пользователь не создан {r['message']=} и {response.status_code=}')
 
     @allure.title('teardown')

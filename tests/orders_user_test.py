@@ -35,7 +35,7 @@ class TestOrdersUser:
         response = ApiRequest.get_with_token(urls.ORDER, payload_token)
         r = response.json()
 
-        assert r['message'] == MessagesResponse.should_be_authorised and response.status_code == 401
+        assert r['message'] == MessagesResponse.SHOULD_BE_AUTHORISED and response.status_code == 401
 
     @allure.title('teardown')
     def teardown_method(self, payload_login):

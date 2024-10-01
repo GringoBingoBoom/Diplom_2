@@ -5,8 +5,8 @@ class MessagesResponse:
     """
     ожидаемые ответы на запросы
     """
-    already_exists = 'User already exists'
-    required_fields = 'Email, password and name are required fields'
-    incorrect_field = 'email or password are incorrect'
-    should_be_authorised = "You should be authorised"
-    no_ingredient = "Ingredient ids must be provided"
+    ALREADY_EXISTS = 'User already exists'
+    REQUIRED_FIELDS = 'Email, password and name are required fields'
+    INCORRECT_FIELD = 'email or password are incorrect'
+    SHOULD_BE_AUTHORISED = "You should be authorised"
+    NO_INGREDIENT = "Ingredient ids must be provided"

@@ -52,7 +52,7 @@ class TestMakeOrder:
         response = ApiRequest.post_with_token(urls.ORDER, payload_token, payload_ingredient)
         r = response.json()
 
-        assert r['message'] == MessagesResponse.no_ingredient and response.status_code == 400
+        assert r['message'] == MessagesResponse.NO_INGREDIENT and response.status_code == 400
 
     @allure.title('4.4. Создание заказа: с неверным хешем ингредиентов')
     def test_make_order_wrong_hash_ingredient(self, payload, create_user):
