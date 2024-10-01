@@ -1,4 +1,4 @@
-FAKE_CEED = 2128506  # ceed для faker
+FAKE_CEED = 212850  # ceed для faker
 
 
 class MessagesResponse:
